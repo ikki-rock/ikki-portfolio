@@ -1,26 +1,71 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* 테일윈드 설정 */
 @theme inline {
+  /* 변수를 테일윈드 클래스로 연결 */
+  --color-primary: var(--primary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent: var(--accent);
+
+  /* 타이포그래피 - 폰트 정의 */
+  --font-sans: "Pretendard Variable", "Pretendard", system-ui, sans-serif;
+
+  /* 타이포그래피 - 사이즈 정의 (8단위 & 4배수) */
+  --font-size-display: 3rem; /* 48px - 메인 타이틀 */
+  --font-size-h1: 2rem; /* 32px - 섹션 제목 */
+  --font-size-h2: 1.5rem; /* 24px - 소제목 */
+  --font-size-base: 1rem; /* 16px - 기본 본문 */
+  --font-size-sm: 0.875rem; /* 14px - 부가 정보 */
+
+  /* 간격 정의(8단위) */
+  --spacing-xs: 0.25rem; /* 4px (4배수 섞기) */
+  --spacing-sm: 0.5rem; /* 8px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 2rem; /* 32px */
+  --spacing-xl: 4rem; /* 64px */
+  --spacing-display: 6rem; /* 96px - 섹션 간 여백 */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 디자인 토큰 정의 (Foundations) */
+:root {
+  /* 기본모드 */
+  --trust-blue: #6789a4;
+  --trust-bg: #f2f4f6;
+  --trust-text: #333d4b;
+  --trust-accent: #d1dce5;
+
+  /* 이끼모드 */
+  --ikki-green: #2d5a27;
+  --ikki-bg: #f8f9f8;
+  --ikki-text: #1a2419;
+  --ikki-accent: #d4e4bc;
+
+  /* 시맨틱 할당 - 초기값: 기본모드 */
+  --primary: var(--trust-blue);
+  --background: var(--trust-bg);
+  --foreground: var(--trust-text);
+  --accent: var(--trust-accent);
+}
+
+.ikki-mode {
+  --primary: var(--ikki-green);
+  --background: var(--ikki-bg);
+  --foreground: var(--ikki-text);
+  --accent: var(--ikki-accent);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  /* 글자를 더 매끄럽고 예쁘게 (크롬, 사파리, 엣지) */
+  -webkit-font-smoothing: antialiased;
+  /* 파이어폭스용 글자 뭉침 방지 */
+  -moz-osx-font-smoothing: grayscale;
+  /* 모드 전환 시 트랜지션 */
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
