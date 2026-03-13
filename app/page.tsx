@@ -17,13 +17,22 @@ export default function Home() {
   return (
     <main className="snap-y snap-mandatory scroll-smooth h-dvh overscroll-behavior-y-contain overflow-y-auto">
       {/* section 1: Hero Section */}
-      <section className="snap-start h-dvh w-full flex flex-col justify-center items-center px-md">
+      <section className="snap-start h-dvh w-full flex flex-col justify-center items-center px-md relative">
         <h2 className="text-7xl md:text-9xl font-black italic tracking-tighter">
           {isIkki ? "IKKI" : "YOO"}
         </h2>
         <p className="mt-4 text-accent font-mono tracking-widest uppercase text-xl">
           {isIkki ? "The Rebel" : "The Architect"}
         </p>
+        {/* 스크롤 인디케이터 */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+          <span className="text-[10px] font-mono uppercase tracking-[0.3em]">
+            Scroll
+          </span>
+          <div className="w-[1px] h-12 bg-foreground relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full bg-accent animate-scroll-line"></div>
+          </div>
+        </div>
       </section>
 
       {/* section 2: Projects Grid */}
