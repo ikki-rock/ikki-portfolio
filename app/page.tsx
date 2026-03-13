@@ -14,6 +14,7 @@ export default function Home() {
     return ALL_PROJECTS.filter((p) => p.mode.includes(isIkki ? "ikki" : "yoo"));
   }, [isIkki]);
 
+  // scroll-snap: 부모에 snap-mandatory or proximity, 자식에 snap-start
   return (
     <main className="snap-y snap-mandatory scroll-smooth h-dvh overscroll-behavior-y-contain overflow-y-auto">
       {/* section 1: Hero Section */}

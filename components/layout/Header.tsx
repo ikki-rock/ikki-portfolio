@@ -11,8 +11,8 @@ export default function Header() {
       {/* 64rem: 1024px (태블릿) */}
       <div className="mx-auto max-w-[64rem] w-full flex justify-between items-center h-full px-md">
         {/* 로고 영역 */}
-        <h1 className="font-bold text-foreground text-h2 tracking-tighter cursor-pointer">
-          {isIkki ? "ikki" : "Yoo"}
+        <h1 className="font-bold text-foreground text-h2 tracking-tighter cursor-pointer italic">
+          {isIkki ? "IKKI" : "YOO"}
         </h1>
         {/* 오른쪽 토글 영역 */}
         <div>
