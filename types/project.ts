@@ -1,0 +1,10 @@
+export interface Project {
+  id: number;
+  title: string;
+  mode: "yoo" | "ikki";
+  desc: string;
+  link: string;
+  tags: string[];
+  role: string;
+  thumbnail?: string;
+}

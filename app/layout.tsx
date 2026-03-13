@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "IKKI STUDIO | 프론트엔드 개발자 Yoo",
-  description: "단순함과 TDD를 지향하며, 종종 삐딱한 감성을 웹으로 시도합니다.",
+  description: "단순함을 지향하며, 종종 삐딱한 감성을 웹으로 시도합니다.",
 };
 
 export default function RootLayout({
