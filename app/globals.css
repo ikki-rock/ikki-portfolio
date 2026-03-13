@@ -69,3 +69,24 @@ body {
     background-color 0.3s ease,
     color 0.3s ease;
 }
+
+html,
+body {
+  height: 100dvh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 브라우저 기본 스크롤바 제거 */
+}
+
+main {
+  /* Firefox */
+  scrollbar-width: none;
+  /* IE, Edge */
+  -ms-overflow-style: none;
+}
+
+/* Chrome, Safari, Opera */
+main::-webkit-scrollbar {
+  display: none;
+}
