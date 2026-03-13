@@ -1,24 +1,13 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useTheme } from "@/providers/ThemeProvider";
 import ThemeToggle from "../shared/ThemeToggle";
 
 export default function Header() {
-  const [isIkki, setIsIkki] = useState(false);
-
-  const toggleMode = useCallback(() => {
-    setIsIkki((prev) => {
-      const nextMode = !prev;
-
-      // document.documentElement === html태그
-      document.documentElement.classList.toggle("ikki-mode", nextMode);
-
-      return nextMode;
-    });
-  }, []);
+  const { isIkki, toggleMode } = useTheme();
 
   return (
-    <header className="h-20 bg-background sticky top-0 border-b border-accent z-50">
+    <header className="h-20 bg-background sticky top-0 border-b border-accent z-50 backdrop-blur">
       {/* 64rem: 1024px (태블릿) */}
       <div className="mx-auto max-w-[64rem] w-full flex justify-between items-center h-full px-md">
         {/* 로고 영역 */}
