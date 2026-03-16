@@ -56,7 +56,7 @@ export default function HomeClient({ initialProjects }: Props) {
                   href={project.link || "#"}
                   target={project.link ? "_blank" : undefined}
                   rel={project.link ? "noopener noreferrer" : undefined}
-                  className={`h-dvh md:h-auto snap-start md:snap-none flex flex-col justify-center group transition-all ${
+                  className={`h-dvh md:h-auto snap-start snap-always md:snap-none flex flex-col justify-center group transition-all ${
                     project.link ? "cursor-pointer" : "cursor-default"
                   }`}
                 >
@@ -138,7 +138,7 @@ export default function HomeClient({ initialProjects }: Props) {
       </section>
 
       {/* section 3: Footer */}
-      <section className="h-dvh snap-start flex items-center justify-center">
+      <section className="h-dvh snap-start snap-always flex items-center justify-center">
         <Footer />
       </section>
     </main>
