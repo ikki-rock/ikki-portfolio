@@ -1,4 +1,10 @@
 import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "IKKI ADMIN | 관리자 모드",
+  robots: "noindex, nofollow", // 검색 엔진에 안 걸리게
+};
 
 export default function AdminLayout({
   children,
