@@ -7,4 +7,5 @@ export interface Project {
   tags: string[];
   role: string;
   thumbnail?: string;
+  created_at: string;
 }

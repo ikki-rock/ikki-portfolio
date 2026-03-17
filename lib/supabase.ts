@@ -1,7 +1,34 @@
-import { createClient } from "@supabase/supabase-js";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-// .env.local에 저장한 키들을 가져옴
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY!;
+export async function createClient() {
+  // cookies()는 비동기 함수이므로 await 필요
+  const cookieStore = await cookies();
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  return createServerClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          try {
+            // 서버 액션/미들웨어에서 쿠키를 구움
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            // 서버 컴포넌트(RSC)에서 호출될 때는 무시됨
+          }
+        },
+        remove(name: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value: "", ...options });
+          } catch (error) {
+            // 서버 컴포넌트(RSC)에서 호출될 때는 무시됨
+          }
+        },
+      },
+    },
+  );
+}

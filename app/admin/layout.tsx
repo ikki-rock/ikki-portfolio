@@ -12,9 +12,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen w-full bg-zinc-50 dark:bg-zinc-950">
+    <div className="flex min-h-screen w-full bg-accent">
       {/* 사이드바 */}
-      <aside className="w-64 border-r bg-white dark:bg-zinc-900 p-6 flex flex-col gap-4">
+      <aside className="w-64 p-6 flex flex-col gap-4">
         <h1 className="text-xl font-bold tracking-tighter">IKKI ADMIN</h1>
         <nav className="flex flex-col gap-2 mt-4 text-sm font-medium">
           <a href="/admin" className="hover:text-accent transition-colors">
