@@ -8,4 +8,5 @@ export interface Project {
   role: string;
   thumbnail?: string;
   created_at: string;
+  updated_at: string;
 }
