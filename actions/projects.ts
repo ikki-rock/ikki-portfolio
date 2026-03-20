@@ -188,6 +188,53 @@ export async function updateProject(id: number | string, formData: FormData) {
 
 // Delete
 export async function deleteProject(id: number) {
-  // TODO
-  revalidatePath("/admin/projects");
+  const supabase = await createClient();
+
+  try {
+    // 1. 먼저 삭제할 프로젝트의 정보를 가져와서 썸네일 URL을 알아냄
+    const { data: project, error: fetchError } = await supabase
+      .from("projects")
+      .select("thumbnail")
+      .eq("id", id)
+      .single();
+
+    if (fetchError) throw new Error("삭제할 프로젝트를 찾지 못했어.");
+
+    // 2. 썸네일 이미지가 있다면 스토리지에서 삭제
+    if (project?.thumbnail) {
+      // URL에서 파일명만 추출 (예: .../thumbnails/12345_image.png -> 12345_image.png)
+      const fileName = project.thumbnail.split("/").pop();
+
+      if (fileName) {
+        const { error: storageError } = await supabase.storage
+          .from("thumbnails")
+          .remove([fileName]); // 스토리지 파일 삭제
+
+        if (storageError)
+          console.error(
+            "이미지 삭제 실패(하지만 계속 진행):",
+            storageError.message,
+          );
+      }
+    }
+
+    // 3. 이제 DB에서 프로젝트 행 삭제
+    const { error: dbError } = await supabase
+      .from("projects")
+      .delete()
+      .eq("id", id);
+
+    if (dbError) throw new Error("DB 삭제 실패: " + dbError.message);
+
+    // 4. 캐시 갱신 🔄
+    revalidatePath("/admin/projects");
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (error: unknown) {
+    console.error("Delete Error:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류";
+    return { success: false, error: errorMessage };
+  }
 }
