@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { logoutAction } from "../login/actions";
+import MobileNav from "./_components/MobileNav";
 
 export const metadata: Metadata = {
   title: "IKKI ADMIN | 관리자 모드",
@@ -27,10 +28,33 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const NavLinks = (
+    <nav className="flex flex-col gap-4 mt-8 text-lg uppercase tracking-tighter">
+      {SIDEBAR_ITEMS.map((item) => (
+        <Link
+          key={item.link}
+          href={item.link}
+          className="px-4 hover:text-primary transition-all border-b border-foreground/5 pb-2"
+        >
+          {item.label}
+        </Link>
+      ))}
+    </nav>
+  );
   return (
-    <div className="flex min-h-screen w-full bg-accent/30">
+    <div className="flex min-h-screen w-full bg-accent/30 flex-col md:flex-row">
+      {/* 모바일 전용 헤더 */}
+      <header className="flex h-16 items-center justify-between px-6 bg-accent md:hidden border-b border-foreground/10">
+        <Link href="/">
+          <h1 className="text-lg font-black tracking-tighter italic">
+            IKKI ADMIN
+          </h1>
+        </Link>
+        {/* 모바일 내비게이션 버튼 */}
+        <MobileNav>{NavLinks}</MobileNav>
+      </header>
       {/* 사이드바 */}
-      <aside className="w-64 p-6 flex flex-col gap-4 bg-accent">
+      <aside className="hidden md:flex w-64 p-6 flex flex-col gap-4 bg-accent">
         {/* 로고 */}
         <Link href={"/"}>
           <h1 className="text-xl font-bold tracking-tighter">IKKI ADMIN</h1>
@@ -66,7 +90,7 @@ export default function AdminLayout({
       </aside>
 
       {/* 메인 콘텐츠 */}
-      <main className="flex-1 p-8">{children}</main>
+      <main className="flex-1 p-4 md:p-8">{children}</main>
     </div>
   );
 }

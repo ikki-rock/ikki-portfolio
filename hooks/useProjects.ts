@@ -1,7 +1,7 @@
 // 지금은 서버컴포넌트로 데이터 페칭을 대신 하여 이 훅은 안씀. (이 훅은 클라이언트방식일때 사용)
 import { useState, useEffect, useMemo } from "react";
 import { Project } from "../types/project";
-import { fetchProjects } from "../lib/projects";
+import { fetchProjects } from "../actions/projects";
 
 export const useProjects = (isIkki: boolean) => {
   const [projects, setProjects] = useState<Project[]>([]);

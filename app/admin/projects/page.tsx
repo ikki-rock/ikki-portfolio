@@ -1,5 +1,5 @@
 import Link from "next/link"; // 🔴 이동을 위해 Link 임포트
-import { fetchProjects } from "@/lib/projects";
+import { fetchProjects } from "@/actions/projects";
 
 export default async function ProjectsPage() {
   const projects = await fetchProjects();

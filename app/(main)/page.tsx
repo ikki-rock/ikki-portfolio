@@ -1,4 +1,4 @@
-import { fetchProjects } from "@/lib/projects";
+import { fetchProjects } from "@/actions/projects";
 import HomeClient from "@/components/HomeClient";
 
 export default async function Home() {
