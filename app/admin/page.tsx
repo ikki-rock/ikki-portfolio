@@ -20,7 +20,7 @@ export default async function AdminHome() {
       <div className="flex flex-col gap-8">
         {/* 통계 섹션 */}
         <section>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 grid-cols-2 sm:grid-cols-3">
             <Card size="default" className="shadow-md">
               <CardHeader>
                 <CardTitle className="text-muted-foreground uppercase text-xs">
@@ -64,7 +64,7 @@ export default async function AdminHome() {
               VIEW ALL →
             </Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {recentProjects?.length > 0 ? (
               recentProjects.map((project) => (
                 <ProjectItem key={project.id} project={project} />

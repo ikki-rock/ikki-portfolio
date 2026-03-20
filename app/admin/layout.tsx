@@ -90,7 +90,7 @@ export default function AdminLayout({
       </aside>
 
       {/* 메인 콘텐츠 */}
-      <main className="w-full p-4 md:p-8 h-dvh overflow-y-scroll">
+      <main className="w-full p-4 md:p-8 md:px-12 h-dvh overflow-y-scroll">
         {children}
       </main>
     </div>
