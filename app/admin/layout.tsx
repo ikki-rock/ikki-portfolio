@@ -42,7 +42,7 @@ export default function AdminLayout({
     </nav>
   );
   return (
-    <div className="flex min-h-screen w-full bg-accent/30 flex-col md:flex-row">
+    <div className="flex h-full w-full bg-accent/30 flex-col md:flex-row">
       {/* 모바일 전용 헤더 */}
       <header className="flex h-16 items-center justify-between px-6 bg-accent md:hidden border-b border-foreground/10">
         <Link href="/">
@@ -54,7 +54,7 @@ export default function AdminLayout({
         <MobileNav>{NavLinks}</MobileNav>
       </header>
       {/* 사이드바 */}
-      <aside className="hidden md:flex w-64 p-6 flex flex-col gap-4 bg-accent">
+      <aside className="hidden md:flex w-64 p-6 flex flex-col gap-4 bg-accent flex-shrink-0">
         {/* 로고 */}
         <Link href={"/"}>
           <h1 className="text-xl font-bold tracking-tighter">IKKI ADMIN</h1>
@@ -90,7 +90,9 @@ export default function AdminLayout({
       </aside>
 
       {/* 메인 콘텐츠 */}
-      <main className="flex-1 p-4 md:p-8">{children}</main>
+      <main className="w-full p-4 md:p-8 h-dvh overflow-y-scroll">
+        {children}
+      </main>
     </div>
   );
 }

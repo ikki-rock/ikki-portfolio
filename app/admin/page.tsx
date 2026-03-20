@@ -14,7 +14,7 @@ export default async function AdminHome() {
   const status = await getDashboardQuickStatus();
   const recentProjects = await fetchProjects(3);
   return (
-    <div className="p-8 space-y-8">
+    <div className="space-y-8">
       <h1 className="text-3xl font-bold tracking-tight">관리자 대시보드</h1>
 
       <div className="flex flex-col gap-8">
@@ -54,7 +54,7 @@ export default async function AdminHome() {
           </div>
         </section>
         {/* 프로젝트 리스트 섹션 */}
-        <section className="gap-4 flex-col min-h-[50dvh] flex">
+        <section className="gap-4 flex-col flex">
           <div className="flex Items-center justify-between">
             <h1>Recent Projects</h1>
             <Link
@@ -64,7 +64,7 @@ export default async function AdminHome() {
               VIEW ALL →
             </Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-3 flex-1">
+          <div className="grid gap-6 md:grid-cols-3">
             {recentProjects?.length > 0 ? (
               recentProjects.map((project) => (
                 <ProjectItem key={project.id} project={project} />
