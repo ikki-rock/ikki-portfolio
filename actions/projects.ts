@@ -98,15 +98,96 @@ export async function createProject(formData: FormData) {
   return { success: true, data: resultData };
 }
 
+interface UpdateProjectData {
+  title: string;
+  desc?: string;
+  link?: string;
+  role?: string;
+  mode: string;
+  tags?: string[];
+  thumbnail?: string;
+}
+
 // Update
-export async function updateProject(id: string, formData: FormData) {
+export async function updateProject(id: number | string, formData: FormData) {
   const supabase = await createClient();
-  // TODO
-  revalidatePath("/admin/projects");
+
+  try {
+    const file = formData.get("thumbnail") as File;
+    let imageUrl = "";
+
+    // 1. 이미지가 새로 선택되었는지 확인 (파일이 있고, 크기가 0보다 커야 함)
+    if (file && file.size > 0) {
+      const fileName = `${Date.now()}_${file.name}`;
+      const { data, error: storageError } = await supabase.storage
+        .from("thumbnails")
+        .upload(fileName, file);
+
+      if (storageError)
+        throw new Error("이미지 업로드 실패: " + storageError.message);
+
+      // 새 이미지의 퍼블릭 URL 가져오기
+      const { data: urlData } = supabase.storage
+        .from("thumbnails")
+        .getPublicUrl(fileName);
+      imageUrl = urlData.publicUrl;
+    }
+
+    // 2. DB 업데이트 데이터 준비
+    // 이미지를 새로 안 올렸으면(imageUrl이 비었으면) thumbnail 필드는 업데이트에서 제외하거나 기존값을 유지해야 함
+    const title = formData.get("title");
+    const desc = formData.get("desc");
+    const link = formData.get("link");
+    const role = formData.get("role");
+    const mode = formData.get("mode");
+    const tags = formData.get("tags");
+
+    const updateData: Partial<UpdateProjectData> = {
+      title: String(title || ""),
+      desc: String(desc || ""),
+      link: String(link || ""),
+      role: String(role || ""),
+      mode: String(mode || "yoo"),
+      tags:
+        typeof tags === "string" ? tags.split(",").map((t) => t.trim()) : [],
+    };
+
+    // 새 이미지가 있을 때만 thumbnail 경로 수정
+    if (imageUrl) {
+      updateData.thumbnail = imageUrl;
+    }
+
+    // 3. DB 업데이트 실행
+    const { data, error: dbError } = await supabase
+      .from("projects")
+      .update(updateData)
+      .eq("id", Number(id))
+      .select();
+
+    if (dbError) throw new Error("DB 업데이트 실패: " + dbError.message);
+
+    if (!data || data.length === 0) {
+      console.warn("⚠️ 업데이트된 행이 없어! ID를 확인해봐:", id);
+      return { success: false, error: "수정할 프로젝트를 찾지 못했어." };
+    }
+
+    // 4. 캐시 갱신 및 결과 반환
+    revalidatePath("/admin/projects");
+    revalidatePath("/"); // 메인 페이지도 갱신!
+
+    return { success: true };
+  } catch (error: unknown) {
+    console.error("Update Error:", error);
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "알 수 없는 오류가 발생했습니다.";
+    return { success: false, error: errorMessage };
+  }
 }
 
 // Delete
-export async function deleteProject(id: string) {
+export async function deleteProject(id: number) {
   // TODO
   revalidatePath("/admin/projects");
 }

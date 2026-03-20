@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { createProject } from "@/actions/projects";
+import { createProject, updateProject } from "@/actions/projects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { ImagePlus, X } from "lucide-react"; // 아이콘 쓰면 더 예뻐! 🥊
+import { ImagePlus, X } from "lucide-react";
+import { Project } from "@/types/project";
 import {
   Select,
   SelectContent,
@@ -14,11 +15,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function ProjectForm() {
+interface ProjectFormProps {
+  initialData?: Project;
+}
+
+export default function ProjectForm({ initialData }: ProjectFormProps) {
+  const [preview, setPreview] = useState<string | null>(
+    initialData?.thumbnail || null,
+  );
+  const [mode, setMode] = useState(initialData?.mode || "yoo");
+
   const router = useRouter();
-  const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [mode, setMode] = useState("yoo");
+
+  // 수정 모드인지 확인
+  const isEditMode = !!initialData; // !!는 boolean으로 나타낼때.
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,9 +59,17 @@ export default function ProjectForm() {
 
   //   프로젝트 추가 래퍼 일반 함수
   async function handleSubmit(formData: FormData) {
-    const result = await createProject(formData);
+    let result;
+    if (isEditMode && initialData) {
+      //수정 모드
+      result = await updateProject(initialData.id, formData);
+    } else {
+      // 생성 모드
+      result = await createProject(formData);
+    }
+
     if (result.success) {
-      alert("프로젝트 추가 성공!");
+      alert(isEditMode ? "프로젝트 수정 성공!" : "프로젝트 추가 성공!");
       router.push("/admin/projects");
       router.refresh();
     } else {
@@ -114,6 +133,7 @@ export default function ProjectForm() {
         <div className="space-y-1">
           <Input
             name="title"
+            defaultValue={initialData?.title}
             className="h-12 text-lg font-medium"
             placeholder="프로젝트 제목"
             required
@@ -123,6 +143,7 @@ export default function ProjectForm() {
         <div className="space-y-1">
           <Input
             name="desc"
+            defaultValue={initialData?.desc}
             className="h-12"
             placeholder="프로젝트 설명 (간략히)"
             required
@@ -130,8 +151,15 @@ export default function ProjectForm() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Input name="role" placeholder="역할 (예: UI/UX Design)" />
-          <Select defaultValue="yoo" onValueChange={(value) => setMode(value)}>
+          <Input
+            name="role"
+            defaultValue={initialData?.role}
+            placeholder="역할 (예: UI/UX Design)"
+          />
+          <Select
+            defaultValue={mode}
+            onValueChange={(value: string) => setMode(value as "yoo" | "ikki")}
+          >
             <SelectTrigger className="h-12 uppercase border-2">
               {" "}
               {/* 1. 클릭하는 버튼 */}
@@ -145,15 +173,20 @@ export default function ProjectForm() {
               <SelectItem value="ikki">IKKI</SelectItem>
             </SelectContent>
           </Select>
-          {/* 🛡️ 국보급 팁: 이 hidden input이 있어야 createProject(formData)에서 'mode'를 읽을 수 있어! */}
+          {/* 이 hidden input이 있어야 createProject(formData)에서 'mode'를 읽을 수 있음 */}
           <input type="hidden" name="mode" value={mode} />
         </div>
 
-        <Input name="link" placeholder="프로젝트 연결 링크 (https://...)" />
+        <Input
+          name="link"
+          defaultValue={initialData?.link}
+          placeholder="프로젝트 연결 링크 (https://...)"
+        />
 
         <div className="space-y-1">
           <Input
             name="tags"
+            defaultValue={initialData?.tags?.join(", ")}
             placeholder="기술 태그 (쉼표로 구분: React, Next.js, TS)"
           />
           <p className="text-[10px] opacity-40 ml-1 italic">
@@ -166,7 +199,7 @@ export default function ProjectForm() {
         type="submit"
         className="mt-4 h-14 text-lg  uppercase tracking-tighter hover:scale-[1.01] transition-transform cursor-pointer"
       >
-        Upload Project
+        {isEditMode ? "Update Project" : "Create Project"}
       </Button>
     </form>
   );
