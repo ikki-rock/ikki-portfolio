@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
+import VisitorTracker from "@/components/VisitorTracker";
 
 export const metadata: Metadata = {
   title: "IKKI STUDIO | 프론트엔드 개발자 Yoo",
@@ -13,6 +14,7 @@ export default function MainLayout({
 }>) {
   return (
     <>
+      <VisitorTracker />
       <Header />
       <main className="flex-1">{children}</main>
     </>

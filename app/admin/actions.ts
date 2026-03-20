@@ -1,4 +1,9 @@
+"use server";
 import { createClient } from "@/lib/supabase";
+import {
+  PostgrestResponse,
+  PostgrestSingleResponse,
+} from "@supabase/supabase-js";
 
 export type QuickStatus = {
   projectCount: number | string;
@@ -6,41 +11,58 @@ export type QuickStatus = {
   visitorCount: number;
 };
 
-// TODO: try catch문 & error.tsx 연결
+const getFulfilledValue = <T>(result: PromiseSettledResult<T>): T | null =>
+  result.status === "fulfilled" ? result.value : null;
+
+// TODO: error.tsx 연결
 export async function getDashboardQuickStatus(): Promise<QuickStatus> {
   const supabase = await createClient();
-  // 1. 세 개의 요청을 동시에 쏜다
-  const [projectResult, updateResult] = await Promise.allSettled([
-    // 전체 프로젝트 개수 쿼리
-    supabase.from("projects").select("*", { count: "exact", head: true }),
-    // 마지막 업데이트 날짜 쿼리 (가장 최근 1건)
-    supabase
-      .from("projects")
-      .select("updated_at")
-      .order("updated_at", { ascending: false })
-      .limit(1)
-      .single(),
-  ]);
 
-  // 2. 요청 결과 분석
-  const projectCount =
-    projectResult.status === "fulfilled" && !projectResult.value.error
-      ? (projectResult.value.count ?? 0)
-      : "-";
+  try {
+    const results = await Promise.allSettled([
+      supabase.from("projects").select("*", { count: "exact", head: true }),
+      supabase
+        .from("projects")
+        .select("updated_at")
+        .order("updated_at", { ascending: false })
+        .limit(1)
+        .single(),
+      supabase.from("page_visits").select("ip_address"),
+    ]);
 
-  const lastUpdate =
-    updateResult.status === "fulfilled" && !updateResult.value.error
-      ? updateResult.value.data?.updated_at
-      : null;
+    const projectRes = getFulfilledValue(
+      results[0],
+    ) as PostgrestResponse<undefined> | null;
+    const updateRes = getFulfilledValue(results[1]) as PostgrestSingleResponse<{
+      updated_at: string;
+    }> | null;
+    const visitRes = getFulfilledValue(results[2]) as PostgrestResponse<{
+      ip_address: string;
+    }> | null;
 
-  // 3. TODO: 방문자수
-  const visitorCount = 128;
+    // 데이터 가공
+    const projectCount = projectRes?.count ?? 0;
+    const lastUpdateRaw = updateRes?.data?.updated_at;
 
-  return {
-    projectCount,
-    lastUpdate: lastUpdate
-      ? new Date(lastUpdate).toLocaleDateString()
-      : "기록 없음",
-    visitorCount,
-  };
+    // [중복 제거 로직]
+    // visitRes?.data가 있으면 그 안의 ip_address들만 뽑아서 Set에 넣음
+    const uniqueIPs = new Set((visitRes?.data || []).map((v) => v.ip_address));
+    const uniqueVisitorCount = uniqueIPs.size;
+
+    return {
+      projectCount,
+      lastUpdate: lastUpdateRaw
+        ? new Date(lastUpdateRaw).toLocaleDateString()
+        : "기록 없음",
+      visitorCount: uniqueVisitorCount,
+    };
+  } catch (error: unknown) {
+    // 네트워크 장애 등 정말 심각한 에러만 여기서 잡음
+    console.error("대시보드 로딩 중 예상치 못한 에러 발생", error);
+    return {
+      projectCount: 0,
+      lastUpdate: "확인 불가",
+      visitorCount: 0,
+    };
+  }
 }
