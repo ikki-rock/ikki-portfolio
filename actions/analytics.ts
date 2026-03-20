@@ -1,9 +1,9 @@
 "use server";
+
 import { createClient } from "@/lib/supabase";
 import { headers } from "next/headers";
 
-// actions/analytics.ts
-export async function logVisit(path: string) {
+export async function logVisit(path: string, visitorId: string) {
   try {
     const headerList = await headers();
     const userAgent = headerList.get("user-agent")?.toLowerCase() || "";
@@ -31,16 +31,15 @@ export async function logVisit(path: string) {
     )
       return;
 
-    // DB 저장
+    // 3. DB 저장
     const supabase = await createClient();
-    const ip = headerList.get("x-forwarded-for") || "unknown";
 
     await supabase.from("page_visits").insert({
       page_path: path,
-      ip_address: ip,
+      // 실제 IP 대신 브라우저에서 발급한 무작위 ID를 저장
+      visitor_id: visitorId,
     });
   } catch (error) {
-    // 분석 로깅 실패가 서비스 전체 에러로 이어지지 않게 조용히 처리
     console.error("Analytics logging failed:", error);
   }
 }

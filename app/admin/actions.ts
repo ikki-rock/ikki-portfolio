@@ -27,7 +27,7 @@ export async function getDashboardQuickStatus(): Promise<QuickStatus> {
         .order("updated_at", { ascending: false })
         .limit(1)
         .single(),
-      supabase.from("page_visits").select("ip_address"),
+      supabase.from("page_visits").select("visitor_id"),
     ]);
 
     const projectRes = getFulfilledValue(
@@ -37,7 +37,7 @@ export async function getDashboardQuickStatus(): Promise<QuickStatus> {
       updated_at: string;
     }> | null;
     const visitRes = getFulfilledValue(results[2]) as PostgrestResponse<{
-      ip_address: string;
+      visitor_id: string;
     }> | null;
 
     // 데이터 가공
@@ -45,8 +45,8 @@ export async function getDashboardQuickStatus(): Promise<QuickStatus> {
     const lastUpdateRaw = updateRes?.data?.updated_at;
 
     // [중복 제거 로직]
-    // visitRes?.data가 있으면 그 안의 ip_address들만 뽑아서 Set에 넣음
-    const uniqueIPs = new Set((visitRes?.data || []).map((v) => v.ip_address));
+    // visitRes?.data가 있으면 그 안의 visitor_id들만 뽑아서 Set에 넣음
+    const uniqueIPs = new Set((visitRes?.data || []).map((v) => v.visitor_id));
     const uniqueVisitorCount = uniqueIPs.size;
 
     return {

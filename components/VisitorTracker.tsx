@@ -8,13 +8,20 @@ export default function VisitorTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // 개발 모드만 제외
+    // 개발 환경이나 관리자 모드면 기록 안 함
     if (process.env.NODE_ENV === "development") return;
-
-    // 관리자가 직접 접속했을 때를 위해 로컬스토리지 체크는 남겨두기
     if (localStorage.getItem("admin_ignore") === "true") return;
 
-    logVisit(pathname);
+    // 1. 입장권(ID) 확인 및 발급
+    let visitorId = localStorage.getItem("visitor_id");
+    if (!visitorId) {
+      // uuid 라이브러리 설치 안 했다면 브라우저 기본 기능 사용!
+      visitorId = window.crypto.randomUUID();
+      localStorage.setItem("visitor_id", visitorId);
+    }
+
+    // 2. 서버로 ID와 함께 전송 🥊 (인자 추가!)
+    logVisit(pathname, visitorId);
   }, [pathname]);
 
   return null;
