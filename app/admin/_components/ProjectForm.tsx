@@ -34,6 +34,11 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
+    // 1. 파일이 선택되었는지 확인
+    console.log("선택된 파일 객체:", file);
+    // 2. input 태그 자체에 값이 물렸는지 확인
+    console.log("input value 값:", e.target.value);
+
     if (file) {
       // 5MB 용량 체크 (5 * 1024 * 1024 bytes)
       if (file.size > 5 * 1024 * 1024) {
@@ -91,39 +96,44 @@ export default function ProjectForm({ initialData }: ProjectFormProps) {
           className="relative group border-2 border-dashed border-muted-foreground/20 rounded-xl overflow-hidden hover:border-primary/50 transition-colors bg-accent/5"
           style={{ aspectRatio: "16 / 9" }}
         >
-          {preview ? (
-            <>
-              <img
-                src={preview}
-                alt="Preview"
-                className="w-full h-full object-cover"
-              />
-              <button
-                type="button"
-                onClick={removeImage}
-                className="absolute top-2 right-2 p-1 bg-destructive text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <X size={16} />
-              </button>
-            </>
-          ) : (
-            <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
-              <ImagePlus className="w-10 h-10 mb-2 opacity-20" />
-              <span className="text-sm opacity-40">
-                이미지를 선택하거나 드래그하세요
-              </span>
-              <span className="text-[10px] mt-1 opacity-30 text-destructive font-bold">
-                ONLY JPG, PNG, WEBP (MAX 5MB)
-              </span>
-              <input
-                type="file"
-                name="thumbnail"
-                className="hidden"
-                accept="image/*"
-                onChange={handleFileChange}
-                ref={fileInputRef}
-              />
-            </label>
+          {preview && (
+            <img
+              src={preview}
+              alt="Preview"
+              className="w-full h-full object-cover"
+            />
+          )}
+          <label
+            className={`absolute inset-0 flex flex-col items-center justify-center cursor-pointer transition-opacity ${preview ? "bg-black/40 opacity-0 group-hover:opacity-100" : "opacity-100"}`}
+          >
+            {!preview && (
+              <>
+                <ImagePlus className="w-10 h-10 mb-2 opacity-20" />
+                <span className="text-sm opacity-40">
+                  이미지를 선택하거나 드래그하세요
+                </span>
+              </>
+            )}
+            {/* 핵심: input은 조건문 밖에 두어 항상 폼 데이터에 포함되게 함 */}
+            <input
+              type="file"
+              name="thumbnail"
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileChange}
+              ref={fileInputRef}
+            />
+          </label>
+
+          {/* 삭제 버튼 */}
+          {preview && (
+            <button
+              type="button"
+              onClick={removeImage}
+              className="absolute top-2 right-2 p-1 bg-destructive text-white rounded-full z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <X size={16} />
+            </button>
           )}
         </div>
       </div>

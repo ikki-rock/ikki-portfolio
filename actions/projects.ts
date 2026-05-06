@@ -48,8 +48,7 @@ export async function createProject(formData: FormData) {
   if (file && file.size > 0) {
     // 고유한 파일명 생성 (한글 파일명 방지를 위해 영어/숫자 조합 권장)
     const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `project-thumbs/${fileName}`; // 버킷 내부 폴더 구조 설정 가능
+    const fileName = `${crypto.randomUUID()}.${fileExt}`;
 
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("thumbnails")
@@ -118,8 +117,10 @@ export async function updateProject(id: number | string, formData: FormData) {
 
     // 1. 이미지가 새로 선택되었는지 확인 (파일이 있고, 크기가 0보다 커야 함)
     if (file && file.size > 0) {
-      const fileName = `${Date.now()}_${file.name}`;
-      const { data, error: storageError } = await supabase.storage
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${crypto.randomUUID()}.${fileExt}`;
+
+      const { error: storageError } = await supabase.storage
         .from("thumbnails")
         .upload(fileName, file);
 
@@ -161,7 +162,7 @@ export async function updateProject(id: number | string, formData: FormData) {
     const { data, error: dbError } = await supabase
       .from("projects")
       .update(updateData)
-      .eq("id", Number(id))
+      .eq("id", id)
       .select();
 
     if (dbError) throw new Error("DB 업데이트 실패: " + dbError.message);
