@@ -29,7 +29,7 @@ export default function HomeClient({ initialProjects }: Props) {
           {isIkki ? "IKKI" : "YOO"}
         </h2>
         <p className="mt-4 text-accent font-mono tracking-widest uppercase text-xl">
-          {isIkki ? "The Rebel" : "The Architect"}
+          {isIkki ? "The Sandbox" : "The Architect"}
         </p>
         {/* 스크롤 인디케이터 */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
