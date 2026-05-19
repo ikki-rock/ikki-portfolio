@@ -3,8 +3,8 @@ import Header from "@/components/layout/Header";
 import VisitorTracker from "@/components/VisitorTracker";
 
 export const metadata: Metadata = {
-  title: "IKKI STUDIO | 프론트엔드 개발자 Yoo",
-  description: "단순함을 지향하며, 종종 삐딱한 감성을 웹으로 시도합니다.",
+  title: "IKKI STUDIO",
+  description: "SIMPLE, FLEXIBLE, SECURE",
 };
 
 export default function MainLayout({
