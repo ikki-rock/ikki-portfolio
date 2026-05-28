@@ -61,14 +61,14 @@ export default function HomeClient({ initialProjects }: Props) {
                   }`}
                 >
                   {/* 프로젝트 썸네일 영역 */}
-                  <div className="relative aspect-[4/5] md:aspect-video bg-neutral-100 rounded-sm border border-accent/10 mb-6 overflow-hidden transition-all duration-500 group-hover:border-accent/50 flex items-center justify-center">
+                  <div className="relative w-full max-h-[55dvh] aspect-[4/5] md:aspect-video bg-neutral-100 rounded-sm border border-accent/10 mb-6 overflow-hidden transition-all duration-500 group-hover:border-accent/50 flex items-center justify-center">
                     {project.thumbnail ? (
                       // 1. 이미지가 있을 때
                       <Image
                         src={project.thumbnail}
                         alt={project.title}
                         fill
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
                       // 2. 이미지가 없을 때 (WIP 플레이스홀더)
