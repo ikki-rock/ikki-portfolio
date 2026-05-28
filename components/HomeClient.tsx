@@ -67,6 +67,7 @@ export default function HomeClient({ initialProjects }: Props) {
                       <Image
                         src={project.thumbnail}
                         alt={project.title}
+                        fill
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
