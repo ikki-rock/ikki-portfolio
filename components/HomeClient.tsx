@@ -22,7 +22,7 @@ export default function HomeClient({ initialProjects }: Props) {
 
   // scroll-snap: 부모에 snap-mandatory or proximity, 자식에 snap-start
   return (
-    <main className="snap-y snap-mandatory scroll-smooth h-dvh overscroll-behavior-y-contain overflow-y-auto">
+    <main className="snap-y snap-mandatory h-dvh overscroll-behavior-y-contain overflow-y-auto">
       {/* section 1: Hero Section */}
       <section className="snap-start h-dvh w-full flex flex-col justify-center items-center px-md relative">
         <h2 className="text-7xl md:text-9xl font-black italic tracking-tighter">
@@ -43,7 +43,7 @@ export default function HomeClient({ initialProjects }: Props) {
       </section>
 
       {/* section 2: Projects Grid */}
-      <section className="min-h-dvh md:snap-start w-full py-20 scroll-mt-20">
+      <section className="min-h-dvh md:h-dvh md:snap-start md:snap-always w-full py-20 md:pt-20 md:pb-0 md:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="mx-auto max-w-[64rem] px-md">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-0 md:gap-x-12 md:gap-y-24">
             {filteredProjects?.map((project) => {
