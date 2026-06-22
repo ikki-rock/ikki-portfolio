@@ -71,16 +71,10 @@
   --trust-text: #333d4b;
   --trust-accent: #d1dce5;
 
-  /* 이끼모드 */
-  --ikki-green: #2d5a27;
-  --ikki-bg: #f8f9f8;
-  --ikki-text: #1a2419;
-  --ikki-accent: #d4e4bc;
-
   /* 폰트 지정 */
   --font-sans: "Pretendard Variable", "Pretendard", ui-sans-serif, system-ui;
 
-  /* 시맨틱 할당 - 초기값: 기본모드 */
+  /* 시맨틱 할당 */
   --primary: var(--trust-blue);
   --accent: var(--trust-accent);
   --background: var(--trust-bg);
@@ -115,23 +109,12 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.ikki-mode {
-  --primary: var(--ikki-green);
-  --background: var(--ikki-bg);
-  --foreground: var(--ikki-text);
-  --accent: var(--ikki-accent);
-}
-
 body {
   font-family: var(--font-sans);
   /* 글자를 더 매끄럽고 예쁘게 (크롬, 사파리, 엣지) */
   -webkit-font-smoothing: antialiased;
   /* 파이어폭스용 글자 뭉침 방지 */
   -moz-osx-font-smoothing: grayscale;
-  /* 모드 전환 시 트랜지션 */
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
 }
 
 html,
@@ -158,6 +141,47 @@ main::-webkit-scrollbar {
 
 section {
   transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes scroll-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-scroll-line {
+  animation: scroll-line 2s ease-in-out infinite;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-enter {
+  animation: hero-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-enter-delay {
+  opacity: 0;
+  animation: hero-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter,
+  .hero-enter-delay {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 /* shadcn이 생성. tailwind v4에 잘 맞는지 아직 조사중 */
