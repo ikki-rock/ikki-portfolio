@@ -1,6 +1,6 @@
 # 🌿 PORTFOLIO
 
-> "단순함을 추구하는 개발자입니다."
+> "본질 중심의 단순함을 추구하는 개발자입니다."
 
 🔗 **Live Demo** [https://ikki-portfolio.vercel.app](https://ikki-portfolio.vercel.app)
 
@@ -47,17 +47,3 @@
 - Color: 'The Architect(Yoo)'와 'The Rebel(Ikki)' 두 테마를 위한 시맨틱 컬러 팔레트 구축.
 
 - Design Tokens: Tailwind v4의 @theme 기능을 활용, 모드 전환 시 CSS 변수(--primary, --background)만 교체하는 효율적인 스위칭 구조.
-
----
-
-## 📅 로드맵 (Roadmap)
-
-- [x] Step 1. 파운데이션 정의: 컬러, 타이포, 간격 규칙 수립 및 8pt Grid 시스템 적용
-
-- [x] Step 2. 디자인 토큰 추출: Tailwind v4 @theme 기반 시맨틱 변수 설정
-
-- [x] Step 3. 전역 레이아웃 구성: Header, Main, Footer 및 Scroll-snap 기반 뼈대 작업
-
-- [x] Step 4. 하이브리드 데이터 연동: 서버 컴포넌트 기반 Supabase 페칭 및 보안(API Key 은닉) 강화
-
-- [x] Step 5. 클라이언트 안정성 확보: AbortController 등을 활용한 비동기 로직 클린업 및 에러 핸들링 구현
