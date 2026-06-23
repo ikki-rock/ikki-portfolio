@@ -173,7 +173,7 @@ section {
 
 .hero-enter-delay {
   opacity: 0;
-  animation: hero-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+  animation: hero-enter 1s cubic-bezier(0.22, 1, 0.36, 1) 0.18s forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
