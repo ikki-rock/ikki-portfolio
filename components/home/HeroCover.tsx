@@ -16,7 +16,7 @@ export default function HeroCover() {
       <div className="relative z-10 w-full max-w-[64rem] mx-auto px-md">
         {/* Mobile: 세로 중앙 스택 */}
         <div className="flex flex-col items-center text-center md:hidden">
-          <h2 className="hero-enter text-[clamp(3.25rem,11vw,5.75rem)] font-black italic tracking-[-0.03em] leading-[0.95]">
+          <h2 className="hero-enter text-[clamp(3.25rem,11vw,5.75rem)] font-black tracking-[-0.03em] leading-[0.95]">
             IKKI
           </h2>
           <div className="hero-enter-delay mt-8 flex flex-col items-center gap-4">
@@ -32,7 +32,7 @@ export default function HeroCover() {
 
         {/* Desktop: 화면 가운데 · IKKI + 서브카피 */}
         <div className="hidden md:flex md:justify-center md:items-center md:gap-8 lg:gap-10">
-          <h2 className="hero-enter text-[clamp(5.5rem,13vw,10rem)] font-black italic tracking-[-0.04em] leading-[0.85] shrink-0">
+          <h2 className="hero-enter text-[clamp(5.5rem,13vw,10rem)] font-black tracking-[-0.04em] leading-[0.85] shrink-0">
             IKKI
           </h2>
 

@@ -46,7 +46,7 @@ export default function AdminLayout({
       {/* 모바일 전용 헤더 */}
       <header className="flex h-16 items-center justify-between px-6 bg-accent md:hidden border-b border-foreground/10">
         <Link href="/">
-          <h1 className="text-lg font-black tracking-tighter italic">
+          <h1 className="text-lg font-black tracking-tighter">
             IKKI ADMIN
           </h1>
         </Link>
